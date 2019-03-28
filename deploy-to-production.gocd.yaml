@@ -1,0 +1,22 @@
+format_version: 3
+pipelines:
+  deploy-to-kubernetes-production:
+    group: demo
+    template: deploy_to_cluster
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      git:
+        git: https://github.com/gocd-contrib/helm-deploy-script.git
+        shallow_clone: false
+        auto_update: true
+        branch: master
+        destination: helm-deploy-script
+      upstream_staging:
+        pipeline: deploy-to-kubernetes-staging
+        stage: defaultStage
+        name: upstream_staging
+    parameters:
+      namespace: prod
+      upstream: ci-build-and-test/functional-tests/deploy-to-staging
+      release_name: prod

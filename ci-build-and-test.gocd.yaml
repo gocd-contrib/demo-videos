@@ -1,0 +1,82 @@
+format_version: 3
+pipelines:
+  ci-build-and-test:
+    group: demo
+    label_template: ${COUNT}
+    lock_behavior: none
+    environment_variables:
+      DOCKERHUB_ORG: gocddemo
+    materials:
+      git:
+        git: https://github.com/gocd-demo/k8s-webinar.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+    stages:
+    - defaultStage:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            artifacts:
+            - external:
+                id: frontend
+                store_id: dockerhub
+                configuration:
+                - key: BuildFile
+                  value: artifact_info.json
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - docker build . --cache-from gocddemo/guestbook:latest -t gocddemo/guestbook:v${GO_PIPELINE_LABEL}
+                  -t gocddemo/guestbook:latest
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                - create_json
+                command: rake
+                run_if: passed
+          ComponentTests:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo "Component tests run here.."
+                command: /bin/bash
+                run_if: passed
+          ComponentPerformanceTests:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo "Component performance tests run here.."
+                command: /bin/bash
+                run_if: passed
+    - VulnerabilityTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          RunTests:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo "Vulnerability tests are run here.."
+                command: /bin/bash
+                run_if: passed

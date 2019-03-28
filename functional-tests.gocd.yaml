@@ -1,0 +1,74 @@
+format_version: 3
+pipelines:
+  functional-tests:
+    group: demo
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      git:
+        git: https://github.com/gocd-demo/k8s-webinar.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+      upstream:
+        pipeline: ci-build-and-test
+        stage: defaultStage
+        name: upstream
+    stages:
+    - defaultStage:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - fetch:
+                artifact_id: frontend
+                pipeline: ci-build-and-test
+                stage: defaultStage
+                job: defaultJob
+                artifact_origin: external
+                run_if: passed
+            - exec:
+                arguments:
+                - network
+                - create
+                - mynet
+                command: docker
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker run -itd --name guestbook-demo --net mynet gocddemo/guestbook:$(jq
+                  -r '.frontend.image' cd.go.artifact.docker.registry.json | cut -d':'
+                  -f2)
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                - https://downloads.gauge.org
+                command: curl
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker run --net mynet ganeshpl/gauge-tests:v1
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                - -c
+                - docker stop $(docker ps -aq); docker rm $(docker ps -aq);
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
+                - network
+                - rm
+                - mynet
+                command: docker
+                run_if: passed
