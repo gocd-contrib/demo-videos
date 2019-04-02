@@ -18,5 +18,5 @@ pipelines:
         name: upstream_staging
     parameters:
       namespace: prod
-      upstream: ci-build-and-test/functional-tests/deploy-to-staging
+      upstream: ci-build-and-test/functional-tests/deploy-to-kubernetes-staging
       release_name: prod
