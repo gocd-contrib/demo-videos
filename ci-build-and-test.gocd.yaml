@@ -28,7 +28,7 @@ pipelines:
                 id: frontend
                 store_id: dockerhub
                 configuration:
-                - key: BuildFile
+                  key: BuildFile
                   value: artifact_info.json
             tasks:
             - exec:
