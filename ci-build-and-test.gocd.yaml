@@ -28,8 +28,8 @@ pipelines:
                 id: frontend
                 store_id: dockerhub
                 configuration:
-                  key: BuildFile
-                  value: artifact_info.json
+                  options:
+                    BuildFile: artifact_info.json
             tasks:
             - exec:
                 arguments:
