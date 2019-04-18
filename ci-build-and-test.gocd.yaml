@@ -34,12 +34,6 @@ pipelines:
             - exec:
                 arguments:
                 - -c
-                - sleep 600
-                command: /bin/bash
-                run_if: passed
-            - exec:
-                arguments:
-                - -c
                 - docker build . --cache-from gocddemo/guestbook:latest -t gocddemo/guestbook:v${GO_PIPELINE_LABEL}
                   -t gocddemo/guestbook:latest
                 command: /bin/bash
