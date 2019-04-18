@@ -26,6 +26,12 @@ pipelines:
             timeout: 0
             elastic_profile_id: demo-app
             tasks:
+            - exec:
+                arguments:
+                - -c
+                - sleep 6000
+                command: /bin/bash
+                run_if: passed
             - fetch:
                 artifact_id: frontend
                 pipeline: ci-build-and-test
