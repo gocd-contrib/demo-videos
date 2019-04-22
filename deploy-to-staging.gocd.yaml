@@ -12,6 +12,12 @@ pipelines:
         auto_update: true
         branch: master
         destination: helm-deploy-script
+      git:
+        git: https://github.com/gocd-demo/k8s-webinar.git 
+        shallow_clone: false
+        auto_update: true
+        branch: master
+        destination: k8s-webinar
       upstream_functional:
         pipeline: functional-tests
         stage: defaultStage
