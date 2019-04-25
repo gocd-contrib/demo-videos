@@ -35,12 +35,6 @@ pipelines:
                 run_if: passed
             - exec:
                 arguments:
-                - -c
-                - sleep 6000
-                command: /bin/bash
-                run_if: passed
-            - exec:
-                arguments:
                 - network
                 - create
                 - mynet
