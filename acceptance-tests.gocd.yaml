@@ -36,7 +36,7 @@ pipelines:
             - exec:
                 arguments:
                 - -c
-                - read
+                - sleep 6000
                 command: /bin/bash
                 run_if: passed
             - exec:
