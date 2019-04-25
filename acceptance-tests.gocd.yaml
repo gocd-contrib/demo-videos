@@ -49,7 +49,7 @@ pipelines:
             - exec:
                 arguments:
                 - -c
-                - docker run --net mynet ganeshpl/gauge-tests:v1
+                - docker run --net mynet gocddemo/demo_acceptance_tests:v1
                 command: /bin/bash
                 run_if: passed
             - exec:
