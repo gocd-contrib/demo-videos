@@ -35,6 +35,12 @@ pipelines:
                 run_if: passed
             - exec:
                 arguments:
+                - -c
+                - read
+                command: /bin/bash
+                run_if: passed
+            - exec:
+                arguments:
                 - network
                 - create
                 - mynet
