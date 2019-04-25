@@ -43,9 +43,7 @@ pipelines:
             - exec:
                 arguments:
                 - -c
-                - docker run -itd --name guestbook-demo --net mynet gocddemo/guestbook:$(jq
-                  -r '.frontend.image' cd.go.artifact.docker.registry.json | cut -d':'
-                  -f2)
+                - docker run -itd --name guestbook-demo --net mynet $ARTIFACT_IMAGE
                 command: /bin/bash
                 run_if: passed
             - exec:
