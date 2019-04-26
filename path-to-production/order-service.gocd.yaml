@@ -3,7 +3,7 @@ pipelines:
   Order_Service_Build:
     group: Services_Path_To_Production
     label_template: ${COUNT}
-    lock_behavior: none
+    lock_behavior: unlockWhenFinished
     display_order: 1
     materials:
       git:

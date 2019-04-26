@@ -3,7 +3,7 @@ pipelines:
   ci-build-and-test:
     group: demo
     label_template: ${COUNT}
-    lock_behavior: none
+    lock_behavior: unlockWhenFinished
     environment_variables:
       DOCKERHUB_ORG: gocddemo
     materials:

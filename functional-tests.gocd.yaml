@@ -3,7 +3,7 @@ pipelines:
   functional-tests:
     group: demo
     label_template: ${COUNT}
-    lock_behavior: none
+    lock_behavior: unlockWhenFinished
     materials:
       git:
         git: https://github.com/gocd-demo/k8s-webinar.git
