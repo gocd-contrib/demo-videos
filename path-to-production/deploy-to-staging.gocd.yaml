@@ -4,6 +4,7 @@ pipelines:
     group: Services_Path_To_Production
     label_template: ${COUNT}
     lock_behavior: none
+    display_order_weight: 3
     materials:
       upstream-order-service:
         pipeline: Order_Service_Acceptance
