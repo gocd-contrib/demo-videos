@@ -1,0 +1,102 @@
+format_version: 3
+pipelines:
+  sample-service-a-build-pipeline:
+    group: Service_Pipelines
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      git:
+        git: https://github.com/gocd-demo/k8s-webinar.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+    stages:
+    - Build:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Building sample service a
+                command: echo
+                run_if: passed
+    - UnitTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running unit tests
+                command: echo
+                run_if: passed
+    - AcceptanceTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          FirstTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running first acceptance test suite
+                command: echo
+                run_if: passed
+          SecondTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running second acceptance test suite
+                command: echo
+                run_if: passed
+    - DeployToStage:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          DeployTask:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying to staging environment
+                command: echo
+                run_if: passed
+    - DeployToProduction:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          DeployTask:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying to production environment 
+                command: echo
+                run_if: passed
