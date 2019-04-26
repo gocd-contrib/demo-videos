@@ -6,7 +6,7 @@ pipelines:
     lock_behavior: none
     materials:
       git:
-        git: https://github.com/gocd-demo/k8s-webinar.git
+        git: https://github.com/gocd-demo/product-service.git
         shallow_clone: true
         auto_update: true
         branch: master
