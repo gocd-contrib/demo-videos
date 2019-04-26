@@ -1,0 +1,45 @@
+format_version: 3
+pipelines:
+  Order_Service_Build:
+    group: Services_Path_To_Production
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      git:
+        git: https://github.com/gocd-demo/order-service.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+    stages:
+    - Build:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Building sample order service
+                command: echo
+                run_if: passed
+    - UnitTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          defaultJob:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running unit tests
+                command: echo
+                run_if: passed

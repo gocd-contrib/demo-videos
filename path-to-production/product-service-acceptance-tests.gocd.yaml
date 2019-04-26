@@ -1,0 +1,42 @@
+format_version: 3
+pipelines:
+  Product_Service_Acceptance:
+    group: Services_Path_To_Production
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      git:
+        git: https://github.com/gocd-demo/demo-acceptance-tests.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+      upstream:
+        pipeline: Product_Service_Build
+        stage: UnitTests
+        name: upstream
+    stages:
+    - AcceptanceTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          FirstTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running first acceptance test suite
+                command: echo
+                run_if: passed
+          SecondTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running second acceptance test suite
+                command: echo
+                run_if: passed

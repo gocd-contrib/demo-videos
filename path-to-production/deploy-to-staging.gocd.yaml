@@ -1,0 +1,39 @@
+format_version: 3
+pipelines:
+  Deploy_To_Staging:
+    group: Services_Path_To_Production
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      upstream-order-service:
+        pipeline: Order_Service_Acceptance
+        stage: AcceptanceTests
+      upstream-product-service:
+        pipeline: Product_Service_Acceptance
+        stage: AcceptanceTests
+    stages:
+    - DeployToStaging:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          DeployOrderService:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying Order Service to staging environment
+                command: echo
+                run_if: passed
+          DeployProductService:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying Product Service to staging environment
+                command: echo
+                run_if: passed

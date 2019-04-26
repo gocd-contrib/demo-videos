@@ -1,0 +1,53 @@
+format_version: 3
+pipelines:
+  Deploy_To_Production:
+    group: Services_Path_To_Production
+    label_template: ${COUNT}
+    lock_behavior: none
+    materials:
+      upstream:
+        pipeline: Deploy_To_Staging
+        stage: DeployToStaging
+    stages:
+    - ReadyForDeployment:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: manual
+        jobs:
+          ApprovalTask:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - -c
+                - echo "Ready to deploy version $GO_PIPELINE_COUNTER to production"
+                command: /bin/bash
+                run_if: passed
+    - DeployToProduction:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          DeployOrderService:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying Order Service to production
+                command: echo
+                run_if: passed
+          DeployProductService:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Deploying Product Service to production
+                command: echo
+                run_if: passed
