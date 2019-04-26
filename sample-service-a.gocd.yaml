@@ -1,6 +1,6 @@
 format_version: 3
 pipelines:
-  sample-service-a-build-pipeline:
+  Product_Service:
     group: Service_Pipelines
     label_template: ${COUNT}
     lock_behavior: none
@@ -24,7 +24,7 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - Building sample service a
+                - Building sample product service
                 command: echo
                 run_if: passed
     - UnitTests:
@@ -97,6 +97,6 @@ pipelines:
             tasks:
             - exec:
                 arguments:
-                - Deploying to production environment 
+                - Deploying to production environment
                 command: echo
                 run_if: passed
