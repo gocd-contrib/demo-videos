@@ -4,6 +4,7 @@ pipelines:
     group: demo
     label_template: ${COUNT}
     lock_behavior: unlockWhenFinished
+    display_order: 1
     environment_variables:
       DOCKERHUB_ORG: gocddemo
     materials:
