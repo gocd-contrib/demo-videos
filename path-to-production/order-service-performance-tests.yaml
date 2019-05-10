@@ -1,0 +1,43 @@
+format_version: 3
+pipelines:
+  Order_Service_Performance:
+    group: Services_Path_To_Production
+    label_template: ${COUNT}
+    lock_behavior: none
+    display_order: 2
+    materials:
+      git:
+        git: https://github.com/gocd-demo/demo-acceptance-tests.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+      upstream:
+        pipeline: Order_Service_Build
+        stage: UnitTests
+        name: upstream
+    stages:
+    - PerformanceTests:
+        fetch_materials: true
+        keep_artifacts: false
+        clean_workspace: false
+        approval:
+          type: success
+        jobs:
+          FirstTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running first performance test suite
+                command: echo
+                run_if: passed
+          SecondTestSuite:
+            timeout: 0
+            elastic_profile_id: demo-app
+            tasks:
+            - exec:
+                arguments:
+                - Running second performance test suite
+                command: echo
+run_if: passed
